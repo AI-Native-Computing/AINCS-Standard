@@ -1,4 +1,4 @@
-# AI-Native Computing Standard (AINCS) - v1.0.1
+# AI-Native Computing Standard (AINCS) - v1.0.2
 
 ## 1. Overview
 AI-Native Computing defines a paradigm where artificial intelligence functions as a **persistent, embedded entity** within software architectures.  
