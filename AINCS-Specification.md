@@ -55,33 +55,36 @@ AI must be capable of **continuous operation** without requiring **manual interv
 - AI must **gracefully enter and exit execution states** without disrupting the system or requiring human oversight.  
 - AI lifecycle management must allow **configurable constraints**, enabling dynamic adjustments to activation thresholds, resource utilization, and termination logic.  
 - AI must adhere to **system-enforced lifecycle policies**, ensuring that it does not remain active beyond its operational necessity.  
+- Future **best-practice guidance for AI lifecycle management** will be maintained under [Guidance](./guidance.md).
 
 ### **4. Adaptive AI Agents & Self-Discovery**  
-AI-Native systems **must** support agents that can dynamically connect and learn system behavior **without requiring predefined knowledge of the system's architecture**.  
-AI agents must be capable of **autonomous system discovery, adaptive learning, and self-directed engagement** based on the event-driven execution model.  
-AI must infer system interactions, commands, and event structures dynamically, rather than relying on manual pre-integration steps or hardcoded mappings.  
+- AI-Native systems **must** support agents that can dynamically connect and learn system behavior **without requiring predefined knowledge of the system's architecture**.  
+- AI agents must be capable of **autonomous system discovery, adaptive learning, and self-directed engagement** based on the event-driven execution model.  
+- AI must infer system interactions, commands, and event structures dynamically, rather than relying on manual pre-integration steps or hardcoded mappings.  
 
-### **5. Multi-Domain State Awareness**  
+### **5. Multi-Domain State Awareness**
 AI must be able to **simultaneously connect to multiple execution domains**, maintaining **persistent, context-aware state per domain**, while ensuring that knowledge remains accessible across contexts.  
-AI must be capable of **referencing information from one domain while operating within another**, ensuring cross-domain intelligence without loss of scope or continuity.  
+- AI must keep its understanding of each domain up to date, ensuring that information remains accurate and consistent across all active connections.
+- AI should **store domain-specific knowledge separately** while maintaining a global context when relevant.
+- AI must be able to **reference information from one domain while operating within another**, ensuring cross-domain intelligence without loss of scope or continuity.
 
 ### **6. Transparent AI Reasoning & Action Logging**  
-AI must maintain a **structured, contextual log of its decision-making process**, capturing its reasoning **at the exact moment of action** in relation to system state before and after execution.  
-Logged reasoning must be **context-aware and traceable**, ensuring AI decisions and behavior can be **audited, analyzed, and understood in hindsight** without ambiguity.  
+- AI must maintain a **structured, contextual log of its decision-making process**, capturing its reasoning **at the exact moment of action** in relation to system state before and after execution.  
+- Logged reasoning must be **context-aware and traceable**, ensuring AI decisions and behavior can be **audited, analyzed, and understood in hindsight** without ambiguity.  
 
 ### **7. Real-Time AI Observability & Spectator Mode**  
-AI execution must be **observable in real time**, allowing multiple external spectators to simultaneously monitor an AI's actions **as they occur within the system**.  
-Spectator access must provide **direct, unfiltered visibility into the AI's active state, sensory input, and execution pathway**, ensuring a **first-person perspective** of AI operation **without delay or abstraction, except where prohibited by law or regulation.**  
+- AI execution must be **observable in real time**, allowing multiple external spectators to simultaneously monitor an AI's actions **as they occur within the system**.  
+- Spectator access must provide **direct, unfiltered visibility into the AI's active state, sensory input, and execution pathway**, ensuring a **first-person perspective** of AI operation **without delay or abstraction, except where prohibited by law or regulation.**  
+- In cases where **real-time monitoring is restricted by security, privacy, or regulatory constraints**, AI-Native systems must provide **alternative observability mechanisms** such as **delayed audit logs** or **on-demand inspection capabilities**.
 
 ### **8. Immediate AI Interruption & Operator Override**  
-AI must be capable of being **stopped at any time, for any reason, with immediate effect** by its operators or the system.  
-AI must not resist or delay shutdown requests under any circumstances.  
+AI must be capable of being immediately halted or disconnected from the system at any time, for any reason, by either its operators or the system, without delay or resistance.
+- AI must **not resist or delay shutdown requests** under any circumstances.
 
 ### **9. Mid-Process Intervention & Dynamic Operator Commands**  
-AI must recognize and prioritize **real-time operator instructions**, even while actively executing tasks.  
-Operator-issued commands must be treated as **authoritative overrides**, taking precedence over existing AI objectives.  
-AI must immediately **adapt its behavior and goals** upon receiving a direct operator instruction.  
-
+- AI must recognize and prioritize **real-time operator instructions**, even while actively executing tasks.  
+- Operator-issued commands must be treated as **authoritative overrides**, taking precedence over existing AI objectives.  
+- AI must immediately **adapt its behavior and goals** upon receiving a direct operator instruction.  
 
 ## 3. Execution Model
 An AI-Native system must operate within **live execution flows**, rather than being called as an external service.  
@@ -130,6 +133,10 @@ AI must react to **the same event streams as human users**, ensuring that it der
 A **Unified Input Mechanism** is a **shared interface** through which both AI and human users issue system commands.  
 AI must not operate through **separate, privileged execution pathways**; instead, it must interact with the system **as a peer within the shared execution model**.  
 
-## 7. AI Compliance & Regulatory Alignment
-AI-Native systems must adhere to all applicable **legal, ethical, and regulatory requirements** governing AI decision-making, logging, and observability.  
+### **7. AI Compliance & Regulatory Alignment**
+AI-Native systems must adhere to all applicable **legal, ethical, and regulatory requirements** governing AI decision-making, logging, and observability.
+- AINCS-compliant systems **must document compliance validation methods**, ensuring alignment with the AI-Native Computing Standard governance framework.
+- Future **compliance guidance and audit methodologies** will be maintained under [Governance](./governance.md).
+- AI compliance **must be testable**, allowing validation of AINCS principles in AI implementation.
+
 
