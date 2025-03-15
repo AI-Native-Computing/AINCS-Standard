@@ -11,6 +11,7 @@ AINCS is an open, formalized standard that establishes AI as a persistent, first
 ## 📚 Read the Full Standard
 - [AINCS Specification](./AINCS-Specification.md)
 - [Governance & Contribution Process](./governance.md)
+- [Guidance & Best Practices](./guidance.md)
 
 ## 🌎 Get Involved
 - [Discussions](https://github.com/AI-Native-Computing/AINCS-Standard/discussions/)
