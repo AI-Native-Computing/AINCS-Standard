@@ -1,4 +1,4 @@
-# AI-Native Computing Standard (AINCS) - v1.0.2
+# AI-Native Computing Standard (AINCS) - v1.0.3
 
 ## 1. Overview
 AI-Native Computing defines a paradigm where artificial intelligence functions as a **persistent, embedded entity** within software architectures.  
@@ -24,7 +24,7 @@ AINCS does not apply to:
 
 ## 2. Core Principles
 
-### **1. AI as a First-Class Execution Entity**  
+### **2.1 AI as a First-Class Execution Entity**  
 AI must function within the same **execution environment** as the rest of the system, subscribing to state changes and interacting through a unified input pathway.  
 
 AI **does not have to be in-process or co-located with the application**, but it **must**:  
@@ -42,14 +42,14 @@ AI **does not have to be in-process or co-located with the application**, but it
 - AI that operates **as a separate offline batch process**, updating state only periodically.  
 - AI that **does not react to system events** but instead waits for direct user queries.
   
-### **2. Unified Input & State Model for Humans & AI**  
+### **2.2 Unified Input & State Model for Humans & AI**  
 AI and human users (when applicable) must interact within the same **event-driven execution model**, ensuring **synchronized state awareness** and **shared input mechanisms**.  
 - AI must **subscribe to the same state propagation events** as human users (when applicable), ensuring parity in system awareness.  
 - AI must **issue commands through the same input pathways as human users** (when applicable), preventing privileged or segregated execution flows.  
 - AI and human inputs (when applicable) must be **contextually equivalent**, meaning AI actions are processed under the same rules and constraints as human actions.  
 - In systems where both AI and human users issue commands, AI-issued commands must be treated with the same priority as human-issued commands when resolving execution conflicts.
 
-### **3. Autonomous Lifecycle Management**  
+### **2.3 Autonomous Lifecycle Management**  
 AI must be capable of **continuous operation** without requiring **manual intervention** for routine execution lifecycle management.  
 - AI entities must be able to **self-activate and self-deactivate** based on **system state and operational context**.  
 - AI must **gracefully enter and exit execution states** without disrupting the system or requiring human oversight.  
@@ -57,31 +57,31 @@ AI must be capable of **continuous operation** without requiring **manual interv
 - AI must adhere to **system-enforced lifecycle policies**, ensuring that it does not remain active beyond its operational necessity.  
 - Future **best-practice guidance for AI lifecycle management** will be maintained under [Guidance](./guidance.md).
 
-### **4. Adaptive AI Agents & Self-Discovery**  
+### **2.4 Adaptive AI Agents & Self-Discovery**  
 - AI-Native systems **must** support agents that can dynamically connect and learn system behavior **without requiring predefined knowledge of the system's architecture**.  
 - AI agents must be capable of **autonomous system discovery, adaptive learning, and self-directed engagement** based on the event-driven execution model.  
 - AI must infer system interactions, commands, and event structures dynamically, rather than relying on manual pre-integration steps or hardcoded mappings.  
 
-### **5. Multi-Domain State Awareness**
+### **2.5 Multi-Domain State Awareness**
 AI must be able to **simultaneously connect to multiple execution domains**, maintaining **persistent, context-aware state per domain**, while ensuring that knowledge remains accessible across contexts.  
 - AI must keep its understanding of each domain up to date, ensuring that information remains accurate and consistent across all active connections.
 - AI should **store domain-specific knowledge separately** while maintaining a global context when relevant.
 - AI must be able to **reference information from one domain while operating within another**, ensuring cross-domain intelligence without loss of scope or continuity.
 
-### **6. Transparent AI Reasoning & Action Logging**  
+### **2.6 Transparent AI Reasoning & Action Logging**  
 - AI must maintain a **structured, contextual log of its decision-making process**, capturing its reasoning **at the exact moment of action** in relation to system state before and after execution.  
 - Logged reasoning must be **context-aware and traceable**, ensuring AI decisions and behavior can be **audited, analyzed, and understood in hindsight** without ambiguity.  
 
-### **7. Real-Time AI Observability & Spectator Mode**  
+### **2.7 Real-Time AI Observability & Spectator Mode**  
 - AI execution must be **observable in real time**, allowing multiple external spectators to simultaneously monitor an AI's actions **as they occur within the system**.  
 - Spectator access must provide **direct, unfiltered visibility into the AI's active state, sensory input, and execution pathway**, ensuring a **first-person perspective** of AI operation **without delay or abstraction, except where prohibited by law or regulation.**  
 - In cases where **real-time monitoring is restricted by security, privacy, or regulatory constraints**, AI-Native systems must provide **alternative observability mechanisms** such as **delayed audit logs** or **on-demand inspection capabilities**.
 
-### **8. Immediate AI Interruption & Operator Override**  
+### **2.8 Immediate AI Interruption & Operator Override**  
 AI must be capable of being immediately halted or disconnected from the system at any time, for any reason, by either its operators or the system, without delay or resistance.
 - AI must **not resist or delay shutdown requests** under any circumstances.
 
-### **9. Mid-Process Intervention & Dynamic Operator Commands**  
+### **2.9 Mid-Process Intervention & Dynamic Operator Commands**  
 - AI must recognize and prioritize **real-time operator instructions**, even while actively executing tasks.  
 - Operator-issued commands must be treated as **authoritative overrides**, taking precedence over existing AI objectives.  
 - AI must immediately **adapt its behavior and goals** upon receiving a direct operator instruction.  
