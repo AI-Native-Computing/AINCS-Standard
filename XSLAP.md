@@ -1,4 +1,4 @@
-AINCS Smart Live Agent Protocol (X-SLAP) v1.0.1
+AINCS Smart Live Agent Protocol (X-SLAP) v1.0.2
 =========
 
 # 1. Overview
@@ -402,8 +402,8 @@ XSLAP compliance is a **necessary** but **not sufficient** requirement for full 
 
 XSLAP is designed to function as part of a broader AI-Native ecosystem. It does not operate in isolation but instead works alongside other key specifications to provide a complete AI-Native framework:
 
-- **XANAF (AI-Native Application Framework)** – Defines **how applications expose their internal state and events** in a structured, AI-consumable format.
-- **XSM (AI State Management)** – Provides **best practices for AI memory, persistence, and long-term learning mechanisms** within AI-Native environments.
+- **XANAF (AI-Native Application Framework)** – Defines how applications expose their internal state and events in a structured, AI-consumable format, allowing AI and human users to operate using the same state data and input mechanisms and pathways.
+- **XSM (AI Spectator Mode)** – Provides real-time visibility into AI decision-making and state awareness, enabling developers, auditors, and human users to observe AI actions as they happen without interfering with live execution. 
 - **XSCOPE (AI Observability & Compliance Engine)** – Ensures that **AI actions are trackable, explainable, and auditable**, allowing organizations to monitor AI decisions effectively.
 
 XSLAP enables **real-time execution**, but **state modeling, observability, and long-term AI behavior are handled by XANAF, XSM, and XSCOPE** respectively. Together, these components form a **holistic standard** for AI-Native Computing.
