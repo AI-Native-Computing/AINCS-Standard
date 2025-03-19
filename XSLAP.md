@@ -1,10 +1,10 @@
-AINCS Smart Live Agent Protocol (X-SLAP) v1.0.2
+AINCS Smart Live Agent Protocol (XSLAP) v1.0.3
 =========
 
 # 1. Overview
 
 ## 1.1 Introduction  
-XSLAP (Xyzzya Smart Live Agent Protocol) 1.0 is a protocol specification for enabling AI agents to interact as first-class digital entities within real-time applications. It defines structured authentication, event subscription, command execution, and state awareness mechanisms, allowing AI agents to function seamlessly alongside human users in live, event-driven environments.  
+XSLAP (AINCS Smart Live Agent Protocol) 1.0 is a protocol specification for enabling AI agents to interact as first-class digital entities within real-time applications. It defines structured authentication, event subscription, command execution, and state awareness mechanisms, allowing AI agents to function seamlessly alongside human users in live, event-driven environments.  
 
 Built for SignalR, XSLAP 1.0 standardizes how AI agents establish persistent, bi-directional connections over WebSockets using SignalR’s real-time event-driven architecture. This ensures that AI can act, observe, and respond as an integrated participant in the application—without relying on traditional request-response models.
 
