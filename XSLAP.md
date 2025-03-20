@@ -1,4 +1,4 @@
-AINCS Smart Live Agent Protocol (XSLAP) v1.0.3
+AINCS Smart Live Agent Protocol (XSLAP) v1.0.4
 =========
 
 # 1. Overview
@@ -247,21 +247,31 @@ If a command partially succeeds but fails in a way that causes state inconsisten
 
 ## 4.3 Structured Command Format  
 
-To ensure consistency and traceability, XSLAP defines a structured command format. This format ensures that commands are uniquely identifiable, extensible, and interoperable.
+To ensure traceability and clear execution feedback, XSLAP mandates that applications immediately respond to all commands with a **"command receipt"**. 
 
-### Mandatory Fields
-| Field          | Type   | Description |
-|---------------|--------|-------------|
-| `commandType`  | string | The action to be executed along with any parameters. |
-| `transactionId` | string | A unique identifier (GUID) for tracking execution. |
+#### Purpose of Command Receipts  
+- Provides immediate validation feedback, distinguishing syntax errors from execution failures before processing begins.
+- Prevents ambiguity, ensuring AI agents receive structured confirmation on command acceptance or rejection.
+- Assigns a unique `executionId` to correlate system responses with the original command, enabling AI agents to track execution outcomes reliably.
 
-### Optional Fields
-| Field         | Type   | Description |
-|--------------|--------|-------------|
-| `metadata`   | object | Application-specific metadata for additional context. |
-| `reasoning`  | string | AI-generated explanation for issuing the command. |
+### Receipt Format  
 
-Applications may extend this format as needed, but must preserve mandatory fields.  
+#### Mandatory Fields  
+- **command** → The exact command that was submitted, echoed verbatim.
+- **timestamp** → UNIX timestamp indicating when the receipt was generated.
+- **status** → `syntax-accepted` (valid command, will be executed) or `syntax-rejected` (invalid format, execution blocked).
+
+#### Optional Fields  
+- **executionId** → A unique identifier (GUID) for tracking execution. **(Only included if status is `syntax-accepted`.)**
+- **details** → Explanation of the syntax issues.  May also include suggestions for proper formatting. **(Only included if status is `syntax-rejected`.)**
+
+### Command Processing Flow  
+1. AI submits a command.  
+2. The system **immediately** responds with a **command receipt**.  
+3. If `syntax-accepted`, execution proceeds as normal.  
+4. If `syntax-rejected`, execution is halted, and AI is given a reason and possible corrections.
+
+By enforcing command receipts, XSLAP ensures that AI agents can immediately distinguish between syntax errors and execution outcomes, preventing misinterpretation of failures. The inclusion of an `executionId` for accepted commands allows AI to track actions across system responses, ensuring precise correlation between issued commands and their resulting effects.
 
 ## 4.4 Structured Response Format  
 
@@ -275,7 +285,7 @@ Each command execution must return a structured response containing:
 ### Mandatory Fields
 | Field          | Type   | Description |
 |---------------|--------|-------------|
-| `transactionId` | string | A unique identifier matching the original command request. |
+| `executionId` | string | A unique identifier matching the original command request. |
 | `status`       | string | `"success"`, `"failure"`, or `"pending"`. |
 | `timestamp`    | integer | UNIX timestamp of when the response was generated. |
 
@@ -289,36 +299,33 @@ Each command execution must return a structured response containing:
 ### Response Handling Guidelines
 - If a command is successfully executed, the response must return `status: "success"` along with any relevant metadata.  
 - If a command fails, the response must return `status: "failure"` with an error code and message explaining the issue.  
-- If a command requires further processing, the response must return `status: "pending"`, indicating that the system will provide a final resolution asynchronously.  
+- If a command requires further processing, the response must return `status: "pending"`, indicating that the system will provide a final resolution asynchronously.
 
 By enforcing a structured response format, XSLAP ensures that AI agents can track, verify, and adapt their behavior based on real-time execution feedback.  
 
-## 4.5 Command Validation & Security  
+## 4.5 Timing & Response Expectations
 
-### Input Validation  
-- Applications must validate incoming commands to ensure they conform to the expected schema.  
-- Malformed or unauthorized commands must be rejected with structured error responses.  
+To ensure that AI agents receive timely feedback on command execution, XSLAP enforces strict response timing requirements. This prevents AI from stalling on long-running processes and ensures predictability in execution tracking.
+
+### Response Timing Requirements
+- Applications **must** return an initial response within 15 seconds of receiving a command.
+- If execution completes within the 15-second window, a final response ("success" or "failure") **must** be provided immediately.
+- If execution cannot complete within 15 seconds, the application **must** return a temporary "pending" response ahead of the final outcome.
+- All "pending" responses must be resolved with a final "success" or "failure" response once execution is completed.  All responses, including pending and final, **must** have the same executionId as the command receipt.
+
+By enforcing response timing rules, XSLAP ensures that AI agents remain responsive, adaptive, and capable of tracking execution in real-time.
+ 
+## 4.6 Command Security  
 
 ### Rate Limiting & Abuse Prevention  
 To prevent system abuse:  
-- Applications must implement rate limiting for command submissions, preventing AI agents from flooding the system.  
-- Throttle policies may be enforced per user, per agent, or globally.  
+- Applications *may* implement rate limiting for command submissions, preventing AI agents from flooding the system.  
+- Throttle policies *may* be enforced per user, per agent, or globally.  
 
 ### Authorization Enforcement  
-- Command execution must respect role-based access control (RBAC).  
-- AI and human users must be restricted from executing unauthorized commands.  
-- The system must enforce security policies before executing commands.  
+- Applications *may* enforce permission management in any way, as long as it does not interfere with XSLAP compliance.
 
-## 4.5 Compliance Requirements  
-For an implementation to be XSLAP-compliant, it must:  
-- Use `ExecuteCommandAsync` as the primary execution method.  
-- Support asynchronous command processing to prevent system bottlenecks.  
-- Implement structured error handling for failed command execution.  
-- Require structured command requests from AI, with mandatory fields.  
-- Apply rate limiting and abuse prevention measures.  
-- Enforce role-based permissions for command execution.  
 
-By adhering to these requirements, XSLAP ensures a secure, efficient, and predictable AI execution model, allowing AI agents to operate autonomously within real-time applications.
 
 # 5. State Synchronization & AI Awareness
 
