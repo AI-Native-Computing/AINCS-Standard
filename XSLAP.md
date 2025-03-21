@@ -1,4 +1,4 @@
-AINCS Smart Live Agent Protocol (XSLAP) v1.0.4
+AINCS Smart Live Agent Protocol (XSLAP) v1.0.5
 =========
 
 # 1. Overview
@@ -154,6 +154,34 @@ Upon successful authentication, the server must send the **ReceiveEventConfig** 
 | `group`      | string | Logical grouping of the event (e.g., `"system.state"`, `"user.action"`). |
 | `tags`       | array  | Categorization tags for filtering and prioritization. |
 | `priority`   | string | `"high"`, `"medium"`, or `"low"`, indicating event importance. |
+
+## 2.4 Session Disconnection
+
+All XSLAP-compliant applications must expose a structured method for explicitly terminating an active session via the same real-time execution pathway used for all other commands. This ensures AI agents and human users alike maintain full lifecycle control over their connection to the system.
+
+### Unified Execution Model
+
+`DisconnectAsync` must be invoked through the standard execution mechanism, preserving uniformity across all command types. This reinforces AI-Human parity by eliminating special-cased methods or hardcoded disconnection flows.
+
+Agents must be empowered to determine when to terminate their session and explicitly issue the command to do so. This is essential for enabling intelligent behaviors such as:
+- Retreating from unstable state conditions,
+- Releasing server-side resources,
+- Triggering agent lifecycle transitions (e.g., shutting down, reauthenticating, switching domains).
+
+### Server Responsibilities
+
+When the server receives a `DisconnectAsync` request:
+- It must immediately clean up the session and associated resources.
+- It must issue any appropriate final broadcasts (e.g., updated presence, disconnection notice).
+- It may optionally respond with a structured acknowledgment.
+
+The server must never auto-disconnect clients without also supporting this explicit command pathway.
+
+### Compatibility and Forward-Looking Design
+
+Even in applications where disconnection is optional or infrequent, this command must exist to preserve consistency and allow clients—especially AI agents—to operate within a fully autonomous lifecycle model.
+
+The server must never auto-disconnect clients without also supporting this explicit command pathway. This ensures agents retain full control over their lifecycle. It supports graceful exits, enables observability, and maintains symmetry with connection and authentication mechanisms. Without it, agents have no structured means of intentional disconnection—violating the core XSLAP principle of agent sovereignty.
 
 
 
