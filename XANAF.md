@@ -1,4 +1,4 @@
-AINCS AI-Native Application Framework (XANAF) v1.0
+AINCS AI-Native Application Framework (XANAF) v1.0.1
 =====
 
 # 1. Overview  
@@ -51,7 +51,7 @@ With XANAF, applications become AI-native by design, allowing AI agents to funct
 
 ### 1.3 Core Capabilities & Architectural Approach  
 
-XANAF enforces an AI-Native execution model by standardizing how applications expose state, accept input, and handle execution feedback.  
+XANAF enforces an AI-Native execution model by standardizing how applications expose state, accept input, and handle execution feedback.  XANAF assumes that AI agents begin with no prior knowledge of application structure or semantics. All valid commands must be discoverable from system state, with no hidden pathways or special instructions assumed.
 
 ### 1.3.1 Event-Driven Execution Model  
 - All actions (AI & human) trigger structured events.  
@@ -73,6 +73,7 @@ XANAF enforces an AI-Native execution model by standardizing how applications ex
 ### 1.3.5 Separation of UI & Business Logic  
 - State representations are AI-first, not UI-dependent.  
 - Execution logic remains purely business-driven.  
+
 
 # 2. Unified Input Pipeline (AI and Human Input Must Be Identical)  
 
@@ -359,6 +360,101 @@ Regardless of implementation, all XANAF-compliant applications **must** adhere t
 
 By enforcing explicit success and failure feedback, XANAF guarantees that AI agents can operate autonomously without relying on human-designed workarounds or manual intervention. Systems that fail to comply introduce unnecessary ambiguity, making them **AI-retrofitted, not AI-native**.
 
+### 4.4 Meta Actions (Global Action List)
+
+While most commands in XANAF are contextual to entities (e.g., actions tied to a specific item or user), **applications may also expose global or meta-level commands** that are not bound to any one entity.
+
+These actions typically affect the overall session, environment, or application state and may include behaviors like:
+
+- Full state refresh (i.e. `GetState`)
+- Application-level settings or configuration
+- Global help or support access
+- Navigation, view toggles, or layout control
+
+#### Key Properties:
+- **Must appear in the discoverable state object**  
+  Meta actions must be delivered like all other commands—AI agents should discover them by inspecting state.
+
+- **Can be used with either Schema-Defined or Direct-Action models**  
+  These are **not** tied to a specific modeling approach. They exist independently of entities.
+
+- **Placed in the root of the state object**  
+  To signal their global nature, meta actions are typically listed under a top-level `actions` array.
+
+This pattern ensures that **AI agents receive a complete, machine-readable menu of valid interactions**, including commands that operate beyond individual entities. By placing meta actions at the root level, applications maintain clarity, simplicity, and discoverability across all models.
+
+```json
+{
+  "actions": [
+    {
+      "label": "Refresh the Application State. This is your 'turn it off and back on again' command.",
+      "command": "GetState"
+    },
+    {
+      "label": "Change Theme",
+      "command": "set theme {\"mode\": \"{dark|light}\"}"
+    }
+  ],
+  "entities": [
+    {
+      "type": "user",
+      "data": [
+        {
+          "id": "u123",
+          "name": "Alice",
+          "actions": [
+            {
+              "label": "Update Profile",
+              "command": "edit profile {\"name\": \"{name}\"}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### 4.5 Recommended Meta-Actions: GetState
+
+While XANAF does not mandate any specific commands, it is considered best practice for applications to expose a discoverable command that performs a **full state refresh**. This action is commonly referred to as `GetState`.
+
+#### Purpose
+AI agents operating in long-lived sessions or dynamic environments may occasionally require a reset of their internal state to reestablish context. A full-state refresh allows them to:
+- Recover from local desynchronization.
+- Rehydrate memory after being restarted.
+- Verify that their world model is consistent with server state.
+
+#### Recommendations
+- This action should be presented to the user like any other discoverable command.
+- It should be explicitly labeled, clearly indicating that it provides a full state snapshot.
+- The behavior of the command should be equivalent to the initial state push on connection.
+
+#### Example Implementations
+- `"command": "GetState"`  
+- `"command": "refresh context"`
+
+
+### 4.6 Stale-State Detection (Optional Best Practice)
+
+To ensure AI agents do not act on outdated information, applications may optionally implement **stale-state validation** during command execution. This is especially useful in multi-user or real-time systems where state changes frequently.
+
+#### Overview
+
+When an AI issues a command, the system compares the agent’s last known state version received (tracked by the application) to the current system version. If a mismatch is detected, the command is rejected, and an updated state is pushed to the AI for reevaluation.
+
+#### Why It Matters
+
+- Prevents execution based on outdated assumptions
+- Improves safety and correctness in shared or volatile systems
+- Enables smarter retry logic in autonomous agents
+
+#### Implementation Recommendations
+
+- Validate per-entity version, not global state
+- If stale, respond with a structured error and full state refresh
+- Provide clear reasons for rejection (e.g., `"error": "state_version_outdated"`)
+
 
 
 ## 5. Conclusion  
@@ -366,3 +462,14 @@ By enforcing explicit success and failure feedback, XANAF guarantees that AI age
 XANAF establishes the foundational principles for **AI-Native application design**, ensuring that AI agents can interact with systems as **first-class participants**, without the inefficiencies of legacy integration approaches.  
 
 By enforcing **structured state exposure, unified input pathways, and explicit execution feedback**, XANAF eliminates ambiguity, reduces technical debt, and creates an environment where AI can function autonomously without pre-training, custom integrations, or human-designed workarounds. 
+
+
+
+## Appendix A: Changelog
+
+### v1.0.1 (March 20, 2025)
+- Added Section 4.4: Meta Actions (global root-level commands)
+- Added Section 4.5: Recommended Meta-Actions (`GetState`)
+- Added Section 4.6: Optional Stale-State Detection best practices
+- Clarified philosophy in Section 1.3 (AI agents begin with no prior knowledge)
+- No breaking changes; all additions are optional and backwards-compatible
