@@ -1,4 +1,4 @@
-AINCS Smart Live Agent Protocol (XSLAP) v1.0.5
+AINCS Smart Live Agent Protocol (XSLAP) v1.0.6
 =========
 
 # 1. Overview
@@ -363,63 +363,27 @@ For AI to function as a first-class execution entity, it must maintain an accura
 XSLAP provides a state synchronization model that ensures:  
 - AI receives an initial full state push upon connection.  
 - AI subscribes to incremental state updates in real-time.  
-- AI may request a full state refresh at any time via `GetStateAsync`.  
 - AI is prevented from executing commands using stale state through stale-state detection.
 
 This eliminates guesswork, ensures synchronized AI decision-making, and maintains behavioral consistency across AI-Native applications.
 
 ## 5.2 State Push and Pull Requirements  
 
-XSLAP defines three primary state synchronization mechanisms:  
+XSLAP defines two primary state synchronization mechanisms:  
 
 ### Initial State Push
-- Upon connection, after the AI confirms that it has subscribed to all events, the application **must** push full state data to the AI.
-- This ensures the AI begins operation with a complete understanding of system context.
-- The initial push cannot be skipped or ignored.
+- Upon connection, after the client confirms readiness via event subscription, the application **must** immediately push full state data to the user.
+- This push must occur exactly once, and must include the complete state relevant to the authenticated user.
+- This ensures the user begins operation with a complete understanding of system context.
 
 ### Incremental State Updates
 - AI subscribes to relevant state update events using `ReceiveEventConfig`.
 - The system pushes real-time state updates when changes occur.
 - AI must process updates continuously to remain synchronized.
 
-### Full State Pull (On-Demand)
-- AI can manually request a fresh state snapshot via `GetStateAsync`.
-- This always returns the latest known state (no caching is allowed).
-- Useful for error recovery, AI model recalibration, or on-demand state validation.
+## 5.3 State Format Best Practices
 
-## 5.3 Structured State Representation  
-
-XSLAP does not impose a strict schema for state representation—state modeling falls under [XANAF](#xanaf).  
-
-However, XSLAP requires applications to implement:
-- A structured, machine-readable state format.
-- A monotonic state version number (`stateVersion`).
-- Per-entity state tracking for granular update control.
-
-Developers are encouraged to follow best practices in XANAF for defining efficient, extensible state models.
-
-## 5.4 Stale-State Protection  
-
-To prevent AI agents from making decisions based on outdated information, XSLAP enforces stale-state detection at execution time.
-
-### How Stale-State Detection Works
-1. AI Executes a Command  
-   - AI submits `ExecuteCommandAsync`, including its last known state version.  
-   
-2. Server Validates State Freshness  
-   - The server compares AI’s known `stateVersion` to the latest system state version.  
-   - If state is fresh, command executes normally.  
-   - If state is stale, command is rejected, and a fresh state update is pushed.
-
-3. AI Receives Full State & Re-Evaluates  
-   - AI updates its internal state.  
-   - AI reassesses its decision before retrying execution.
-
-### Key Stale-State Enforcement Rules
-- No Opt-Out – AI must operate on fresh state; stale execution is prohibited.  
-- Per-Entity Validation – Staleness is determined per affected entity, not system-wide.  
-- Applies to Both AI & Humans – Human UI interactions must also check for stale data before executing actions.  
-- No Caching Allowed – AI must always process the latest state version in all decisions.
+XSLAP does not mandate any specific data structure for state delivery. However, for best results, we recommend adopting the [XANAF Schema-Defined Model](https://github.com/AI-Native-Computing/AINCS-Standard/edit/main/XANAF.md#42-schema-defined-model) — a flexible, introspectable format optimized for real-time interaction, validation, and autonomous generation.
 
 
 
