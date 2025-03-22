@@ -1,4 +1,4 @@
-AINCS Smart Live Agent Protocol (XSLAP) v1.0.6
+AINCS Smart Live Agent Protocol (XSLAP) v1.0.7
 =========
 
 # 1. Overview
@@ -76,8 +76,8 @@ XSLAP defines a structured process for AI agents and human users to establish a 
 4. **Client Subscribes to Relevant Events**  
    - The client begins listening for system state updates using the provided event subscription data.  
 
-5. **Client Confirms Readiness via Standard Execution Mechanism**  
-   - The client executes a confirmation-of-readiness command using the standard execution mechanism.  
+5. **Client Confirms Readiness**  
+   - The client executes a special method to indicate to the server that is has completed all configuration and is ready to start receiving state data.  
 
 6. **Server Completes the Connection Handshake by Providing Full State Data**  
    - Server sends full state data to the client.  
@@ -116,7 +116,7 @@ Once authentication is successful, the server must send a list of available even
    - The client registers event listeners for relevant event types.  
    - The client may ignore low-priority or irrelevant events.  
 
-3. **Client Confirms Event Setup**  
+3. **Client Confirms Event Setup (`ReadyAsync`)**  
    - The client must send a confirmation message indicating that event setup is complete.  
    - This prevents race conditions where the server pushes full state before the client is fully ready.  
 
@@ -311,18 +311,29 @@ Each command execution must return a structured response containing:
 - Optional metadata, providing additional context such as execution duration, system logs, or rollback details.  
 
 ### Mandatory Fields
-| Field          | Type   | Description |
-|---------------|--------|-------------|
-| `executionId` | string | A unique identifier matching the original command request. |
-| `status`       | string | `"success"`, `"failure"`, or `"pending"`. |
-| `timestamp`    | integer | UNIX timestamp of when the response was generated. |
+
+- **`executionId`** (`string`):  
+  A unique identifier matching the original command request.
+
+- **`status`** (`string`):  
+  One of `"success"`, `"failure"`, or `"pending"`.
+
+- **`timestamp`** (`integer`):  
+  UNIX timestamp indicating when the response was generated.
+
+---
 
 ### Extensible Fields
-| Field          | Type   | Description |
-|---------------|--------|-------------|
-| `message`     | string | Human-readable explanation of success or failure. |
-| `errorCode`   | string | Machine-readable error code (only present if `status` is `"failure"`). |
-| `metadata`    | object  | Application-specific metadata for additional context. |
+
+- **`message`** (`string`):  
+  A human-readable explanation of success or failure.
+
+- **`errorCode`** (`string`, optional):  
+  A machine-readable error code (only present if `status` is `"failure"`).
+
+- **`metadata`** (`object`, optional):  
+  Application-specific metadata providing additional context.
+
 
 ### Response Handling Guidelines
 - If a command is successfully executed, the response must return `status: "success"` along with any relevant metadata.  
