@@ -1,4 +1,4 @@
-AINCS Smart Live Agent Protocol (XSLAP) v1.0.7
+AINCS Smart Live Agent Protocol (XSLAP) v1.0.8
 =========
 
 # 1. Overview
@@ -211,33 +211,44 @@ To ensure consistency, security, and interoperability, XSLAP mandates a claims-b
 
 ### Connection is Established, and the User Operates Within the Execution Model  
    - If validation succeeds, the user subscribes to events and executes commands like any other participant in the system.
-   - AI and humans operate identically at the execution level.
-
-
+   - AI and humans operate identically within the XSLAP execution model.
 
 ## 3.3 Session Token Format Specification
+
 XSLAP mandates a structured session token format containing at least the following required claims. JWT is the recommended format due to its standardization and cryptographic security.
 
 ### Required Claims
-| Claim Key  | Type     | Description |
-|------------|---------|-------------|
-| `sub`      | string  | Unique User ID (UUID format recommended) |
-| `type`     | string  | `"human"` or `"ai"` |
-| `role`     | string  | User role in the system (e.g., `"developer"`, `"admin"`, `"observer"`) |
-| `iat`      | integer | Issued At (UNIX timestamp) |
-| `exp`      | integer | Expiration Time (UNIX timestamp) |
+
+- **`sub`** (string):  
+  Unique User ID. UUID format is recommended for consistency and interoperability.
+
+- **`species`** (string):  
+  Identifies the nature of the agent (e.g., `"human"`, `"ai"`).
+
+- **`role`** (string):  
+  Defines the user’s role in the system (e.g., `"developer"`, `"admin"`, `"observer"`).
+
+- **`iat`** (integer):  
+  The Issued At timestamp in UNIX time format, indicating when the token was created.
+
+- **`exp`** (integer):  
+  The Expiration Time in UNIX time format, after which the token is no longer valid.
 
 ### Optional Claims
-| Claim Key       | Type   | Description |
-|----------------|--------|-------------|
-| `permissions` | array  | Array of granular permissions assigned to the user |
-| `custom`     | object | Any application-specific custom metadata |
+
+- **`permissions`** (array):  
+  A list of granular permission strings that may be used to further restrict or expand agent capabilities.
+
+- **`custom`** (object):  
+  Application-specific metadata that does not conflict with required claims.
 
 ## 3.4. Security & Best Practices  
 - Security Considerations: Implementations should follow industry best practices for authentication, encryption, and access control where appropriate.  
 - Authentication & Token Validation: The XSLAP hub should validate session tokens and enforce access policies as needed by the application.  
 - Flexible Access Control: Applications may define their own authorization models based on their specific requirements.  
 - Secure Transport (If Needed): Where confidentiality is required, TLS 1.2+ or equivalent encryption is recommended.  
+
+These guidelines aim to support secure, interoperable implementations without constraining innovation.
 
 
 
